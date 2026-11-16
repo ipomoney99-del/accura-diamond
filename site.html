@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СтройДом — Строительство и ремонт под ключ</title>
+    <!-- Подключение шрифта Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',      /* Глубокий графитово-синий */
+                            slate: '#1e293b',     /* Архитектурный сланец */
+                            accent: '#d97706',    /* Теплый янтарно-терракотовый */
+                            accentHover: '#b45309',
+                            light: '#f8fafc',     /* Светлый архитектурный фон */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-light text-slate-800 font-sans antialiased selection:bg-brand-accent selection:text-white">
+
+    <!-- ==================== НАВИГАЦИЯ (STICKY HEADER) ==================== -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Логотип -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-brand-dark flex items-center justify-center text-white shadow-md group-hover:bg-brand-accent transition-colors duration-300">
+                        <!-- Архитектурная иконка -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-brand-dark block leading-none">СТРОЙ<span class="text-brand-accent">ДОМ</span></span>
+                        <span class="text-[11px] uppercase tracking-widest text-slate-500 font-medium">Строительная компания</span>
+                    </div>
+                </a>
+
+                <!-- Десктопное меню -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="text-sm font-medium text-slate-600 hover:text-brand-accent transition-colors">Услуги</a>
+                    <a href="#portfolio" class="text-sm font-medium text-slate-600 hover:text-brand-accent transition-colors">Наши работы</a>
+                    <a href="#reviews" class="text-sm font-medium text-slate-600 hover:text-brand-accent transition-colors">Отзывы Google</a>
+                    <a href="#contacts" class="text-sm font-medium text-slate-600 hover:text-brand-accent transition-colors">Контакты</a>
+                </nav>
+
+                <!-- Кнопка действия и телефон в шапке -->
+                <div class="hidden md:flex items-center gap-5">
+                    <a href="tel:+37369123456" class="text-sm font-semibold text-brand-dark hover:text-brand-accent transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                        +373 (69) 123-456
+                    </a>
+                    <a href="#order" class="px-5 py-2.5 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-white text-sm font-semibold shadow-sm hover:shadow transition-all duration-200">
+                        Оставить заявку
+                    </a>
+                </div>
+
+                <!-- Кнопка мобильного меню -->
+                <button id="mobile-menu-btn" aria-label="Открыть меню" class="md:hidden p-2.5 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none">
+                    <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Выпадающее мобильное меню -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 px-4 pt-3 pb-6 space-y-2 shadow-lg">
+            <a href="#services" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-accent">Услуги</a>
+            <a href="#portfolio" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-accent">Наши работы</a>
+            <a href="#reviews" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-accent">Отзывы Google</a>
+            <a href="#contacts" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-accent">Контакты</a>
+            <div class="pt-3 border-t border-slate-100 flex flex-col gap-3">
+                <a href="tel:+37369123456" class="flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-100 text-brand-dark font-semibold">
+                    <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                    +373 (69) 123-456
+                </a>
+                <a href="#order" class="mobile-link text-center py-3 rounded-xl bg-brand-accent text-white font-semibold shadow">
+                    Рассчитать стоимость
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== ГЛАВНЫЙ ЭКРАН (HERO) ==================== -->
+    <section class="relative bg-brand-dark text-white overflow-hidden">
+        <!-- Фоновое изображение с затемнением и fallback-градиентом -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80" 
+                 alt="Современный загородный дом" 
+                 onerror="this.style.display='none'"
+                 class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/90 to-brand-dark/60"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
+            <div class="max-w-3xl">
+                <!-- Бейдж доверия -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm text-xs sm:text-sm font-medium text-amber-300 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    Работаем по договору • Фиксированная смета • Гарантия 5 лет
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] mb-6">
+                    Строительство и ремонт <span class="text-brand-accent">под ключ</span> с гарантией качества
+                </h1>
+
+                <p class="text-base sm:text-lg lg:text-xl text-slate-300 leading-relaxed mb-10 max-w-2xl">
+                    Возводим современные частные дома, выполняем капитальный ремонт квартир и коммерческих помещений. Соблюдаем сроки и берем на себя все заботы — от проекта до финальной уборки.
+                </p>
+
+                <!-- Кнопки CTA -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#order" class="inline-flex items-center justify-center px-7 py-4 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-white font-semibold text-base shadow-lg shadow-amber-900/30 transition-all duration-200">
+                        Рассчитать стоимость
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a href="#portfolio" class="inline-flex items-center justify-center px-7 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-base backdrop-blur-sm transition-all duration-200">
+                        Посмотреть наши работы
+                    </a>
+                </div>
+
+                <!-- Ключевые показатели -->
+                <div class="grid grid-cols-3 gap-4 sm:gap-8 mt-14 pt-8 border-t border-white/15 max-w-xl">
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-white">12+ лет</div>
+                        <div class="text-xs sm:text-sm text-slate-400 mt-1">Опыт в строительстве</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-white">140+</div>
+                        <div class="text-xs sm:text-sm text-slate-400 mt-1">Сданных объектов</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 flex items-center gap-1">
+                            4.9 <span class="text-lg">★</span>
+                        </div>
+                        <div class="text-xs sm:text-sm text-slate-400 mt-1">Рейтинг в Google</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== РАЗДЕЛ УСЛУГ ==================== -->
+    <section id="services" class="py-20 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-brand-accent font-semibold text-sm uppercase tracking-wider">Направления работы</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand-dark mt-2">Наши строительные услуги</h2>
+                <p class="text-slate-600 mt-4 text-base sm:text-lg">
+                    Выполняем полный цикл работ с поэтапной оплатой и прозрачной отчетностью на каждом этапе.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                <!-- Карточка 1 -->
+                <div class="group bg-brand-light rounded-2xl p-7 border border-slate-200/80 hover:border-brand-accent/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-brand-accent flex items-center justify-center mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3">Строительство домов</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Возведение коттеджей из котельца, газобетона и монолита. Фундамент, коробка, кровля, фасад и инженерные сети.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200">
+                        <div class="text-xs text-slate-500">Стоимость от</div>
+                        <div class="text-lg font-bold text-brand-dark">450 € / м²</div>
+                    </div>
+                </div>
+
+                <!-- Карточка 2 -->
+                <div class="group bg-brand-light rounded-2xl p-7 border border-slate-200/80 hover:border-brand-accent/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-brand-accent flex items-center justify-center mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3">Ремонт под ключ</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Капитальный и дизайнерский ремонт квартир в новостройках и вторичном жилье. Электрика, сантехника, чистовая отделка.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200">
+                        <div class="text-xs text-slate-500">Стоимость от</div>
+                        <div class="text-lg font-bold text-brand-dark">180 € / м²</div>
+                    </div>
+                </div>
+
+                <!-- Карточка 3 -->
+                <div class="group bg-brand-light rounded-2xl p-7 border border-slate-200/80 hover:border-brand-accent/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-brand-accent flex items-center justify-center mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3">Коммерческие объекты</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Строительство и реконструкция офисов, магазинов, складов и кафе с соблюдением всех строительных и пожарных норм.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200">
+                        <div class="text-xs text-slate-500">Стоимость от</div>
+                        <div class="text-lg font-bold text-brand-dark">220 € / м²</div>
+                    </div>
+                </div>
+
+                <!-- Карточка 4 -->
+                <div class="group bg-brand-light rounded-2xl p-7 border border-slate-200/80 hover:border-brand-accent/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-brand-accent flex items-center justify-center mb-6 group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3">Кровля и фасады</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Монтаж скатных и плоских крыш, утепление фасадов минеральной ватой и пенополистиролом, декоративная штукатурка.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200">
+                        <div class="text-xs text-slate-500">Выезд и замер</div>
+                        <div class="text-lg font-bold text-emerald-600">Бесплатно</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ГАЛЕРЕЯ РАБОТ (ПОРТФОЛИО) ==================== -->
+    <section id="portfolio" class="py-20 sm:py-24 bg-brand-light border-t border-slate-200/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+                <div>
+                    <span class="text-brand-accent font-semibold text-sm uppercase tracking-wider">Портфолио</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-brand-dark mt-2">Выполненные проекты</h2>
+                </div>
+                <p class="text-slate-600 max-w-md text-sm sm:text-base">
+                    Нажмите на любую фотографию, чтобы рассмотреть детали объекта ближе.
+                </p>
+            </div>
+
+            <!-- Сетка фотографий (6 проектов) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Проект 1 -->
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                     data-src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=85"
+                     data-title="Двухэтажный коттедж в стиле минимализм"
+                     data-desc="Площадь: 210 м² • Срок строительства: 8 месяцев • Кишинёв, Дурлешты">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" 
+                         alt="Двухэтажный коттедж"
+                         onerror="this.src='https://placehold.co/800x600/1e293b/f8fafc?text=Коттедж+210+м²'"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <span class="inline-block px-2.5 py-1 rounded-md bg-brand-accent text-xs font-semibold mb-2">Строительство дома</span>
+                        <h3 class="text-lg font-bold leading-snug">Двухэтажный коттедж, 210 м²</h3>
+                        <p class="text-xs text-slate-300 mt-1">Кишинёв • Сдан под ключ</p>
+                    </div>
+                </div>
+
+                <!-- Проект 2 -->
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                     data-src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85"
+                     data-title="Дизайнерский ремонт 3-комнатной квартиры"
+                     data-desc="Площадь: 94 м² • Срок: 3.5 месяца • ЖК в центре Кишинёва">
+                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80" 
+                         alt="Ремонт квартиры"
+                         onerror="this.src='https://placehold.co/800x600/1e293b/f8fafc?text=Ремонт+квартиры+94+м²'"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <span class="inline-block px-2.5 py-1 rounded-md bg-slate-700 text-xs font-semibold mb-2">Ремонт под ключ</span>
+                        <h3 class="text-lg font-bold leading-snug">Квартира в новостройке, 94 м²</h3>
+                        <p class="text-xs text-slate-300 mt-1">Кишинёв, Центр • Полная отделка</p>
+                    </div>
+                </div>
+
+                <!-- Проект 3 -->
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                     data-src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85"
+                     data-title="Загородный дом с террасой"
+                     data-desc="Площадь: 165 м² • Утепленный фасад, панорамное остекление • Яловены">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" 
+                         alt="Загородный дом с террасой"
+                         onerror="this.src='https://placehold.co/800x600/1e293b/f8fafc?text=Дом+с+террасой+165+м²'"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <span class="inline-block px-2.5 py-1 rounded-md bg-brand-accent text-xs font-semibold mb-2">Строительство дома</span>
+                        <h3 class="text-lg font-bold leading-snug">Загородный дом с террасой, 165 м²</h3>
+                        <p class="text-xs text-slate-300 mt-1">Яловены • Коробка + фасад</p>
+                    </div>
+                </div>
+
+                <!-- Проект 4 -->
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                     data-src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85"
+                     data-title="Современное офисное пространство"
+                     data-desc="Площадь: 320 м² • Перепланировка, вентиляция, освещение и отделка • Кишинёв, Ботаника">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" 
+                         alt="Офисное пространство"
+                         onerror="this.src='https://placehold.co/800x600/1e293b/f8fafc?text=Офисный+центр+320+м²'"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <span class="inline-block px-2.5 py-1 rounded-md bg-slate-700 text-xs font-semibold mb-2">Коммерция</span>
+                        <h3 class="text-lg font-bold leading-snug">IT-офис open-space, 320 м²</h3>
+                        <p class="text-xs text-slate-300 mt-1">Кишинёв, Ботаника • Сдан за 2 месяца</p>
+                    </div>
+                </div>
+
+                <!-- Проект 5 -->
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                     data-src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85"
+                     data-title="Кухня-гостиная в частном доме"
+                     data-desc="Комплексная внутренняя отделка, теплые полы, монтаж скрытых дверей • Ставчены">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" 
+                         alt="Интерьер гостиной"
+                         onerror="this.src='https://placehold.co/800x600/1e293b/f8fafc?text=Внутренняя+отделка'"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <span class="inline-block px-2.5 py-1 rounded-md bg-slate-700 text-xs font-semibold mb-2">Внутренняя отделка</span>
+                        <h3 class="text-lg font-bold leading-snug">Интерьер таунхауса, 140 м²</h3>
+                        <p class="text-xs text-slate-300 mt-1">Ставчены • Чистовая отделка</p>
+                    </div>
+                </div>
+
+                <!-- Проект 6 -->
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                     data-src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=85"
+                     data-title="Монолитно-каркасное строительство"
+                     data-desc="Устройство фундамента, армирование и заливка перекрытий по проекту • Бельцы">
+                    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80" 
+                         alt="Строительство каркаса"
+                         onerror="this.src='https://placehold.co/800x600/1e293b/f8fafc?text=Монолитные+работы'"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <span class="inline-block px-2.5 py-1 rounded-md bg-brand-accent text-xs font-semibold mb-2">Конструктив</span>
+                        <h3 class="text-lg font-bold leading-snug">Монолитные работы и кровля</h3>
+                        <p class="text-xs text-slate-300 mt-1">Бельцы • Технадзор на объекте</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ОТЗЫВЫ И КНОПКА В GOOGLE MAPS ==================== -->
+    <section id="reviews" class="py-20 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Шапка блока с плашкой Google Maps -->
+            <div class="bg-brand-light rounded-3xl p-8 sm:p-10 border border-slate-200/90 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 mb-12">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                    <!-- Иконка Google Maps -->
+                    <div class="w-16 h-16 rounded-2xl bg-white shadow-md border border-slate-100 flex items-center justify-center shrink-0">
+                        <svg class="w-9 h-9" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                            <path fill="#34A853" d="M12 22s7-7.75 7-13c0-1.15-.28-2.23-.77-3.19L12 12v10z"/>
+                            <path fill="#FBBC05" d="M5.77 5.81C5.28 6.77 5 7.85 5 9c0 5.25 7 13 7 13V12L5.77 5.81z"/>
+                            <path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 1.15.28 2.23.77 3.19L12 12l6.23-6.19C17.07 3.55 14.72 2 12 2z"/>
+                            <circle fill="#FFFFFF" cx="12" cy="9" r="2.5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-brand-dark">Отзывы в Google Maps</h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">Проверено</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span class="text-2xl font-extrabold text-brand-dark">4.9</span>
+                            <div class="flex text-amber-400 text-lg" aria-label="Рейтинг 4.9 из 5">
+                                ★★★★★
+                            </div>
+                            <span class="text-sm text-slate-500">(на основе 68 оценок клиентов)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка перехода сразу к написанию отзыва в Google Maps -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                    <!-- ПРИМЕЧАНИЕ ДЛЯ ВЛАДЕЛЬЦА: Замените href ниже на вашу прямую ссылку формата https://search.google.com/local/writereview?placeid=ВАШ_PLACE_ID -->
+                    <a href="https://www.google.com/maps/search/?api=1&query=Строительная+компания+Кишинев" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-brand-dark hover:bg-slate-800 text-white font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all duration-200">
+                        <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        Написать отзыв в Google Maps
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Карточки реальных отзывов -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Отзыв 1 -->
+                <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-slate-800 text-white font-bold flex items-center justify-center text-sm">АМ</div>
+                                <div>
+                                    <div class="font-bold text-brand-dark text-sm">Андрей Морару</div>
+                                    <div class="text-xs text-slate-400">2 недели назад • Google</div>
+                                </div>
+                            </div>
+                            <div class="text-amber-400 text-sm">★★★★★</div>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            «Заказывали капитальный ремонт квартиры 86 м² в новостройке. Очень понравилось, что смета не выросла в процессе работы. Прораб всегда на связи, присылал фотоотчеты каждые 3 дня. Рекомендую!»
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Отзыв 2 -->
+                <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-accent text-white font-bold flex items-center justify-center text-sm">ЕК</div>
+                                <div>
+                                    <div class="font-bold text-brand-dark text-sm">Елена Кожокару</div>
+                                    <div class="text-xs text-slate-400">1 месяц назад • Google</div>
+                                </div>
+                            </div>
+                            <div class="text-amber-400 text-sm">★★★★★</div>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            «Строили с ребятами дом в Яловенах. Помогли оптимизировать проект фундамента и крыши, сэкономили нам приличный бюджет без потери качества. Сдали коробку точно в оговоренный срок.»
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Отзыв 3 -->
+                <div class="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-sm">ДС</div>
+                                <div>
+                                    <div class="font-bold text-brand-dark text-sm">Дмитрий Сырбу</div>
+                                    <div class="text-xs text-slate-400">2 месяца назад • Google</div>
+                                </div>
+                            </div>
+                            <div class="text-amber-400 text-sm">★★★★★</div>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            «Делали ремонт офиса и фасадное утепление. Аккуратные мастера, после себя оставили идеальный порядок, все документы и акты закрыли вовремя. Будем обращаться еще.»
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ФОРМА ЗАКАЗА / РАСЧЕТА СТОИМОСТИ ==================== -->
+    <section id="order" class="py-20 sm:py-24 bg-brand-dark text-white relative overflow-hidden">
+        <!-- Декоративный элемент фона -->
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 rounded-full bg-brand-accent/10 blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Левая колонка: преимущества заявки -->
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-amber-400 font-semibold text-sm uppercase tracking-wider">Онлайн-заявка</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold leading-tight">
+                        Оставьте заявку на бесплатный расчет сметы
+                    </h2>
+                    <p class="text-slate-300 text-base leading-relaxed">
+                        Укажите тип объекта и примерную площадь — инженер свяжется с вами в течение 30 минут, ответит на вопросы и при необходимости согласует бесплатный выезд на замер.
+                    </p>
+
+                    <ul class="space-y-4 pt-2">
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-brand-accent/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                            <span class="text-sm text-slate-200">Бесплатный выезд инженера и составление сметы</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-brand-accent/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                            <span class="text-sm text-slate-200">Помощь в закупке материалов со скидками от партнеров</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-brand-accent/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                            <span class="text-sm text-slate-200">Никакого спама — звоним только по вашему проекту</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Правая колонка: интерактивная форма заказа -->
+                <div class="lg:col-span-7">
+                    <div class="bg-white text-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl">
+                        <form id="order-form" class="space-y-5" novalidate>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <!-- Выбор услуги -->
+                                <div>
+                                    <label for="service-type" class="block text-sm font-semibold text-slate-700 mb-1.5">Вид работ</label>
+                                    <select id="service-type" name="service" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/20 outline-none transition text-sm font-medium">
+                                        <option value="450">Строительство дома под ключ</option>
+                                        <option value="180">Капитальный ремонт квартиры</option>
+                                        <option value="220">Ремонт / строительство коммерции</option>
+                                        <option value="90">Кровельные или фасадные работы</option>
+                                    </select>
+                                </div>
+
+                                <!-- Площадь объекта -->
+                                <div>
+                                    <label for="area-input" class="block text-sm font-semibold text-slate-700 mb-1.5">Примерная площадь (м²)</label>
+                                    <input type="number" id="area-input" name="area" min="10" max="10000" value="100" placeholder="Например: 120"
+                                           class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/20 outline-none transition text-sm font-medium">
+                                </div>
+                            </div>
+
+                            <!-- Предварительный ориентир стоимости -->
+                            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs font-medium text-amber-900 block">Предварительный ориентир стоимости:</span>
+                                    <span class="text-[11px] text-amber-700">Точная цена фиксируется после замера</span>
+                                </div>
+                                <div id="estimated-price" class="text-xl sm:text-2xl font-extrabold text-brand-accent">
+                                    ~ 45 000 €
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <!-- Имя -->
+                                <div>
+                                    <label for="client-name" class="block text-sm font-semibold text-slate-700 mb-1.5">Ваше имя <span class="text-red-500">*</span></label>
+                                    <input type="text" id="client-name" name="name" required placeholder="Иван"
+                                           class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/20 outline-none transition text-sm">
+                                </div>
+
+                                <!-- Телефон -->
+                                <div>
+                                    <label for="client-phone" class="block text-sm font-semibold text-slate-700 mb-1.5">Телефон / WhatsApp / Viber <span class="text-red-500">*</span></label>
+                                    <input type="tel" id="client-phone" name="phone" required placeholder="+373 (__) ___-___"
+                                           class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/20 outline-none transition text-sm">
+                                </div>
+                            </div>
+
+                            <!-- Комментарий -->
+                            <div>
+                                <label for="client-comment" class="block text-sm font-semibold text-slate-700 mb-1.5">Кратко о задаче (необязательно)</label>
+                                <textarea id="client-comment" name="comment" rows="2" placeholder="Где находится объект, есть ли уже проект или когда планируете старт..."
+                                          class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/20 outline-none transition text-sm"></textarea>
+                            </div>
+
+                            <!-- Сообщение об ошибке валидации -->
+                            <div id="form-error" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
+                                Пожалуйста, укажите ваше имя и контактный номер телефона.
+                            </div>
+
+                            <!-- Кнопка отправки -->
+                            <button type="submit" class="w-full py-4 px-6 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-white font-bold text-base shadow-lg shadow-amber-600/25 transition-all duration-200 cursor-pointer">
+                                Отправить заявку на расчет
+                            </button>
+                        </form>
+
+                        <!-- Экран успешной отправки (скрыт по умолчанию) -->
+                        <div id="form-success" class="hidden text-center py-8 space-y-4">
+                            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-3xl font-bold">
+                                ✓
+                            </div>
+                            <h3 class="text-2xl font-bold text-brand-dark">Заявка успешно принята!</h3>
+                            <p class="text-slate-600 max-w-md mx-auto text-sm sm:text-base">
+                                Спасибо, <span id="submitted-name" class="font-semibold text-brand-dark"></span>! Наш инженер уже получил данные и перезвонит вам по номеру <span id="submitted-phone" class="font-semibold text-brand-dark"></span> в ближайшее время.
+                            </p>
+                            <div class="pt-4">
+                                <button type="button" id="reset-form-btn" class="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition">
+                                    Отправить еще одну заявку
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== КОНТАКТЫ И КАРТА ==================== -->
+    <section id="contacts" class="py-20 sm:py-24 bg-brand-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-14">
+                <span class="text-brand-accent font-semibold text-sm uppercase tracking-wider">Свяжитесь с нами</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand-dark mt-2">Контакты и офис</h2>
+                <p class="text-slate-600 mt-3 text-base">
+                    Приезжайте на консультацию в офис или напишите нам в удобный мессенджер.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <!-- Карточка контактов -->
+                <div class="lg:col-span-5 bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between space-y-8">
+                    <div class="space-y-6">
+                        <!-- Телефоны -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-11 h-11 rounded-xl bg-amber-100 text-brand-accent flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Телефоны</div>
+                                <a href="tel:+37369123456" class="block text-lg font-bold text-brand-dark hover:text-brand-accent transition mt-0.5">+373 (69) 123-456</a>
+                                <a href="tel:+37322123456" class="block text-sm font-medium text-slate-600 hover:text-brand-accent transition mt-0.5">+373 (22) 12-34-56 (Офис)</a>
+                            </div>
+                        </div>
+
+                        <!-- Адрес -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-11 h-11 rounded-xl bg-amber-100 text-brand-accent flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Адрес офиса</div>
+                                <p class="text-base font-semibold text-brand-dark mt-0.5">г. Кишинёв, бул. Штефан чел Маре, 128</p>
+                                <p class="text-sm text-slate-500 mt-0.5">Бизнес-центр, 3 этаж, офис 304</p>
+                            </div>
+                        </div>
+
+                        <!-- Режим работы и Email -->
+                        <div class="flex items-start gap-4">
+                            <div class="w-11 h-11 rounded-xl bg-amber-100 text-brand-accent flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">График работы и почта</div>
+                                <p class="text-sm font-semibold text-brand-dark mt-0.5">Пн – Пт: 09:00 – 18:00 • Сб: 10:00 – 14:00</p>
+                                <a href="mailto:info@stroydom.md" class="inline-block text-sm text-brand-accent hover:underline font-medium mt-1">info@stroydom.md</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кнопки мессенджеров -->
+                    <div class="pt-6 border-t border-slate-100">
+                        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Быстрая связь в мессенджерах:</div>
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <a href="https://wa.me/37369123456" target="_blank" rel="noopener noreferrer"
+                               class="py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold text-xs sm:text-sm text-center transition">
+                                WhatsApp
+                            </a>
+                            <a href="viber://chat?number=%2B37369123456"
+                               class="py-2.5 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold text-xs sm:text-sm text-center transition">
+                                Viber
+                            </a>
+                            <a href="https://t.me/+37369123456" target="_blank" rel="noopener noreferrer"
+                               class="py-2.5 px-3 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold text-xs sm:text-sm text-center transition">
+                                Telegram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Интерактивная карта Google Maps -->
+                <div class="lg:col-span-7 bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm min-h-[360px] relative">
+                    <iframe 
+                        title="Карта расположения офиса СтройДом"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2719.951548774741!2d28.83232731561029!3d47.0215629791502!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c97c3628b769a1%3A0x37d1d6305749dd3c!2zQ2hpyJlpbsSDdSwgTW9sZG92YQ!5e0!3m2!1sru!2s!4v1700000000000!5m2!1sru!2s" 
+                        class="w-full h-full min-h-[360px] border-0"
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ПОДВАЛ (FOOTER) ==================== -->
+    <footer class="bg-brand-dark text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-brand-accent flex items-center justify-center text-white font-bold">
+                        С
+                    </div>
+                    <span class="text-white font-bold tracking-tight">СТРОЙДОМ</span>
+                    <span class="text-xs text-slate-500">© 2026 Все права защищены</span>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-6 text-sm">
+                    <a href="#services" class="hover:text-white transition">Услуги</a>
+                    <a href="#portfolio" class="hover:text-white transition">Портфолио</a>
+                    <a href="#reviews" class="hover:text-white transition">Отзывы</a>
+                    <a href="#order" class="hover:text-white transition">Рассчитать смету</a>
+                    <a href="#contacts" class="hover:text-white transition">Контакты</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== МОДАЛЬНОЕ ОКНО ДЛЯ ПРОСМОТРА ФОТО (LIGHTBOX) ==================== -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="relative max-w-4xl w-full bg-brand-dark rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
+            <button id="lightbox-close" aria-label="Закрыть фото" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <img id="lightbox-img" src="" alt="Просмотр проекта" class="w-full max-h-[72vh] object-cover bg-slate-900">
+            <div class="p-6 bg-brand-dark text-white">
+                <h3 id="lightbox-title" class="text-xl font-bold"></h3>
+                <p id="lightbox-desc" class="text-sm text-slate-300 mt-1"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== СКРИПТЫ ИНТЕРАКТИВНОСТИ ==================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const iconOpen = document.getElementById('menu-icon-open');
+            const iconClose = document.getElementById('menu-icon-close');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            function toggleMobileMenu() {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                iconOpen.classList.toggle('hidden', isHidden);
+                iconClose.classList.toggle('hidden', !isHidden);
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        toggleMobileMenu();
+                    }
+                });
+            });
+
+            // 2. Предварительный калькулятор стоимости в форме заказа
+            const serviceSelect = document.getElementById('service-type');
+            const areaInput = document.getElementById('area-input');
+            const estimatedPriceEl = document.getElementById('estimated-price');
+
+            function updateEstimate() {
+                const rate = parseFloat(serviceSelect.value) || 0;
+                const area = Math.max(0, parseFloat(areaInput.value) || 0);
+                const total = Math.round(rate * area);
+                estimatedPriceEl.textContent = total > 0 
+                    ? `~ ${total.toLocaleString('ru-RU')} €` 
+                    : 'По запросу';
+            }
+
+            serviceSelect.addEventListener('change', updateEstimate);
+            areaInput.addEventListener('input', updateEstimate);
+            updateEstimate();
+
+            // 3. Обработка отправки формы заказа
+            const orderForm = document.getElementById('order-form');
+            const formError = document.getElementById('form-error');
+            const formSuccess = document.getElementById('form-success');
+            const submittedName = document.getElementById('submitted-name');
+            const submittedPhone = document.getElementById('submitted-phone');
+            const resetFormBtn = document.getElementById('reset-form-btn');
+
+            orderForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nameVal = document.getElementById('client-name').value.trim();
+                const phoneVal = document.getElementById('client-phone').value.trim();
+
+                if (!nameVal || !phoneVal) {
+                    formError.classList.remove('hidden');
+                    return;
+                }
+
+                formError.classList.add('hidden');
+                submittedName.textContent = nameVal;
+                submittedPhone.textContent = phoneVal;
+
+                orderForm.classList.add('hidden');
+                formSuccess.classList.remove('hidden');
+            });
+
+            resetFormBtn.addEventListener('click', () => {
+                orderForm.reset();
+                updateEstimate();
+                formSuccess.classList.add('hidden');
+                orderForm.classList.remove('hidden');
+            });
+
+            // 4. Лайтбокс для галереи фотографий
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            const lightboxModal = document.getElementById('lightbox-modal');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxDesc = document.getElementById('lightbox-desc');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            portfolioItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    lightboxImg.src = item.dataset.src;
+                    lightboxTitle.textContent = item.dataset.title;
+                    lightboxDesc.textContent = item.dataset.desc;
+                    lightboxModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            function closeLightbox() {
+                lightboxModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxModal.addEventListener('click', (e) => {
+                if (e.target === lightboxModal) {
+                    closeLightbox();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !lightboxModal.classList.contains('hidden')) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
